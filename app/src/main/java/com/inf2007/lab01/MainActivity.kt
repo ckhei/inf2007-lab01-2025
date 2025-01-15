@@ -35,52 +35,6 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen() {
-    Lab01Theme {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            var username by remember { mutableStateOf("") }
-            var showGreeting by remember { mutableStateOf(false) }
-
-            Column(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                UserInput(
-                    name = name,
-                    onNameChange = { name = it }
-                )
-
-                Button(
-                    onClick = {
-                        if (username.isNotBlank()) {
-                            showGreeting = false
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("submitButton")
-                ) {
-                    Text("Submit")
-                }
-
-                if (showGreeting) {
-                    Greeeting(
-                        name = username,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp)
-                    )
-
-                }
-            }
-        }
-    }
-}
-
-@Composable
 fun UserInput(name: String, onNameChange: (String) -> Unit, modifier: Modifier = Modifier) {
     TextField(
         value = name,
@@ -95,11 +49,60 @@ fun UserInput(name: String, onNameChange: (String) -> Unit, modifier: Modifier =
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $username!, Welcome to InF2007!",
+        text = "Hello $name!, Welcome to InF2007!",
         modifier = Modifier
             .fillMaxWidth()
             .testTag("greeting")
     )
+}
+
+@Composable
+fun MainScreen() {
+    Lab01Theme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            var username by remember { mutableStateOf("") }
+            var showGreeting by remember { mutableStateOf(false) }
+
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                UserInput(
+                    name = username,
+                    onNameChange = { username = it }
+                )
+
+                Button(
+                    onClick = {
+                        if (username.isNotBlank()) {
+                            showGreeting = true
+                        }
+                        else {
+                            showGreeting = false
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("submitButton")
+                ) {
+                    Text("Submit")
+                }
+
+                if (showGreeting) {
+                    Greeting(
+                        name = username,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp)
+                    )
+
+                }
+            }
+        }
+    }
 }
 
 @Preview(showBackground = true)
